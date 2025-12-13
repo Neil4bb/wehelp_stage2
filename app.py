@@ -1,15 +1,17 @@
 from fastapi import *
 from fastapi.responses import FileResponse,JSONResponse
 import mysql.connector
+from dotenv import load_dotenv
+import os
 
 app=FastAPI()
 
 def get_connection():
 	return mysql.connector.connect(
-		host="localhost",
-		user="root",
-		password="123456",
-		database="wehelp_stage2"
+		host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
 	)
 
 # Static Pages (Never Modify Code in this Block)
