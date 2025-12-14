@@ -1,10 +1,11 @@
 from fastapi import *
 from fastapi.responses import FileResponse,JSONResponse
 import mysql.connector
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 app=FastAPI()
+load_dotenv()
 
 def get_connection():
 	return mysql.connector.connect(
@@ -94,18 +95,43 @@ async def get_attractions(page: int = Query(0, ge=0),
 
 			#---------加上images--------
 
-		
+		attraction_ids = [item["id"] for item in data]
 
-		
+		placeholders = ",".join(["%s"] * len(attraction_ids))
+
+		sql_images = f"""
+		SELECT attraction_id, url
+		FROM attraction_images
+		WHERE attraction_id IN ({placeholders})
+		"""
+
 		cursor_images = conn.cursor(dictionary=True)
+		cursor_images.execute(sql_images, attraction_ids)
+		image_rows = cursor_images.fetchall()
+
+		image_map = {}
+
+		for row in image_rows:
+			aid = row["attraction_id"]
+			if aid not in image_map:
+				image_map[aid] = []
+			image_map[aid].append(row["url"])
 
 		for item in data:
-			cursor_images.execute(
-				"SELECT url FROM attraction_images WHERE attraction_id=%s",
-				(item["id"],)
-			)
-			img_rows = cursor_images.fetchall()
-			item["images"] = [img["url"] for img in img_rows]
+			item["images"] = image_map.get(item["id"], [])
+
+
+
+		
+		#cursor_images = conn.cursor(dictionary=True)
+
+		#for item in data:
+		#	cursor_images.execute(
+		#		"SELECT url FROM attraction_images WHERE attraction_id=%s",
+		#		(item["id"],)
+		#	)
+		#	img_rows = cursor_images.fetchall()
+		#	item["images"] = [img["url"] for img in img_rows]
 
 		sql_total = """
 			SELECT COUNT(*) AS cnt
@@ -211,14 +237,15 @@ async def searchById(attractionId: int):
 async def get_categories():
 	try:
 		conn = get_connection()
-		cursor = conn.cursor()
+		cursor = conn.cursor(dictionary=True)
 
 		cursor.execute("""
 			SELECT DISTINCT category
 			FROM attraction
 			ORDER BY category
 		""")
-		categories = cursor.fetchall()
+		rows = cursor.fetchall()
+		categories = [row["category"] for row in rows]
 
 		cursor.close()
 		conn.close()
