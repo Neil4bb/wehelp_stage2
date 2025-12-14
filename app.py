@@ -1,6 +1,20 @@
 from fastapi import *
 from fastapi.responses import FileResponse,JSONResponse
 import mysql.connector
+<<<<<<< HEAD
+import os
+from dotenv import load_dotenv
+
+app=FastAPI()
+load_dotenv()
+
+def get_connection():
+	return mysql.connector.connect(
+		host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+=======
 
 app=FastAPI()
 
@@ -10,6 +24,7 @@ def get_connection():
 		user="root",
 		password="123456",
 		database="wehelp_stage2"
+>>>>>>> origin/main
 	)
 
 # Static Pages (Never Modify Code in this Block)
@@ -92,6 +107,45 @@ async def get_attractions(page: int = Query(0, ge=0),
 
 			#---------加上images--------
 
+<<<<<<< HEAD
+		attraction_ids = [item["id"] for item in data]
+
+		placeholders = ",".join(["%s"] * len(attraction_ids))
+
+		sql_images = f"""
+		SELECT attraction_id, url
+		FROM attraction_images
+		WHERE attraction_id IN ({placeholders})
+		"""
+
+		cursor_images = conn.cursor(dictionary=True)
+		cursor_images.execute(sql_images, attraction_ids)
+		image_rows = cursor_images.fetchall()
+
+		image_map = {}
+
+		for row in image_rows:
+			aid = row["attraction_id"]
+			if aid not in image_map:
+				image_map[aid] = []
+			image_map[aid].append(row["url"])
+
+		for item in data:
+			item["images"] = image_map.get(item["id"], [])
+
+
+
+		
+		#cursor_images = conn.cursor(dictionary=True)
+
+		#for item in data:
+		#	cursor_images.execute(
+		#		"SELECT url FROM attraction_images WHERE attraction_id=%s",
+		#		(item["id"],)
+		#	)
+		#	img_rows = cursor_images.fetchall()
+		#	item["images"] = [img["url"] for img in img_rows]
+=======
 		
 
 		
@@ -104,6 +158,7 @@ async def get_attractions(page: int = Query(0, ge=0),
 			)
 			img_rows = cursor_images.fetchall()
 			item["images"] = [img["url"] for img in img_rows]
+>>>>>>> origin/main
 
 		sql_total = """
 			SELECT COUNT(*) AS cnt
@@ -209,14 +264,23 @@ async def searchById(attractionId: int):
 async def get_categories():
 	try:
 		conn = get_connection()
+<<<<<<< HEAD
+		cursor = conn.cursor(dictionary=True)
+=======
 		cursor = conn.cursor()
+>>>>>>> origin/main
 
 		cursor.execute("""
 			SELECT DISTINCT category
 			FROM attraction
 			ORDER BY category
 		""")
+<<<<<<< HEAD
+		rows = cursor.fetchall()
+		categories = [row["category"] for row in rows]
+=======
 		categories = cursor.fetchall()
+>>>>>>> origin/main
 
 		cursor.close()
 		conn.close()

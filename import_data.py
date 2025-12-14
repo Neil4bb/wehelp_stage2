@@ -1,6 +1,18 @@
 import json
 import mysql.connector
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def get_connection():
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
 
 def load_data():
     with open("data/taipei-attractions.json", "r", encoding="utf-8") as f:
@@ -35,12 +47,7 @@ def load_data():
     return clean_list
 
 def save_to_db(clean_list):
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="123456",
-        database="wehelp_stage2"
-    )
+    conn = get_connection()
     cursor = conn.cursor()
 
     sql1 ="""
