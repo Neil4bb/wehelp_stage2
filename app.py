@@ -3,9 +3,12 @@ from fastapi.responses import FileResponse,JSONResponse
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI()
 load_dotenv()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def get_connection():
 	return mysql.connector.connect(
