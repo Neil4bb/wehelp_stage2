@@ -297,6 +297,18 @@ main {
         background-image: url('/static/images/welcome_mobile_cut.png'); /* 確保路徑正確 */
     }
 
+    .search-box {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .search-box input {
+    flex: 1;      /* 自動佔滿剩餘空間，彈性伸縮 */
+    min-width: 0; /* 防止被預設最小寬度撐開 */
+}
+
     /* 調整 Mobile 上的箭頭樣式或讓其更小 */
     .mrt-arrow {
         font-size: 16px;
