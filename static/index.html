@@ -3,9 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+  <title>台北一日遊</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script defer src="/static/script.js"></script>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">台北一日遊</div>
+      <div class="nav-menu">
+        <div class="nav-item">預定行程</div>
+        <div class="nav-item">登入/註冊</div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>輕鬆享受台北一日悠閒</h1>
+      <p>探索每個角落，體驗城市的深度旅遊行程</p>
+      
+      <div class="search-box">
+        <button id="category">全部分類▼</button>
+        
+        <input id="search-input" type="text" placeholder="輸入景點名稱查詢">
+        
+        <button id="search-button"><img src="/static/images/icon_search.png" alt="search"></button>
+        
+        <div id="category-panel" class="category-panel">
+          <div class="category-list" id="category-list">
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
   
+  <section class="mrt-section">
+    <div class="mrt-container">
+        <button class="mrt-arrow left-arrow"><img src="/static/images/arrow_left.png" alt="❮"></button> 
+        
+        <div class="mrt-list-wrapper">
+            <ul id="mrt-list">
+                </ul>
+        </div>
+
+        <button class="mrt-arrow right-arrow"><img src="/static/images/arrow_right.png" alt="❯"></button>
+    </div>
+  </section>
+
+  <main>
+    <div class="attraction-container" id="attraction-container">
+      <!--<div class="attraction-item">
+        
+        <div class="attraction-image-box">
+          <img src="XXXX" alt="景點圖片">
+          <div class="attraction-name-tag">景點名稱</div>
+        </div>
+        
+        <div class="attraction-details">
+          <div class="mrt-name">捷運站名</div>
+          <div class="category">景點類別</div>
+        </div>
+
+      </div>-->
+    </div>
+    
+    <div id="footer-sentinel" style="height: 10px; margin-bottom: 20px;"></div>
+  </main>
+
+  <footer class="footer">
+    <p>COPYRIGHT © 2021 台北一日遊</p>
+  </footer>
+
 </body>
 </html>
