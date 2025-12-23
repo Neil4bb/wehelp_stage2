@@ -1,0 +1,335 @@
+/* nav */
+.navbar {
+    width: 100%;
+    height: 54px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: sticky; /* 固定在頂部 */
+    top: 0;
+    z-index: 100;    /* 確保導覽列永遠在最上層 */
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 0 15px;    /* 預防手機版文字貼邊 */
+    display: flex;
+    justify-content: space-between; /* Logo 靠左 Menu 靠右 */
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #448899;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px; /* 兩個選項之間的間距 */
+}
+
+.nav-item {
+    font-size: 16px;
+    color: #666666;
+    cursor: pointer;
+}
+
+/* hero */
+.hero {
+    width: 100%;
+    height: 320px; 
+    background-image: url('/static/images/welcome_desktop.png'); 
+    background-size: cover;    /* 讓圖片填滿整個區塊 */
+    background-position: center; /* 圖片中心對齊 */
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    color: #F8F8F8;
+}
+
+.hero-content h1 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* 搜尋框 */
+.search-box {
+    position: relative;
+    display: flex;
+    max-width: 500px;
+}
+
+.search-box input {
+    flex-grow: 1; /* 讓輸入框佔滿剩餘空間 */
+    padding: 15px;
+    border: none;
+    font-size: 16px;
+    color: #757575;
+}
+
+.search-box #category {
+    width: 90px;
+    background-color: #EEEEEE;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px 0 0 5px; /* 左邊圓角 */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.search-box #search-button {
+    width: 60px;
+    background-color: #448899;
+    border: none;
+    border-radius: 0 5px 5px 0; /* 右邊圓角 */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-box button img {
+    width: 30px; /* 放大鏡大小 */
+}
+
+.category-panel {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 65%;
+    background: white;
+    z-index: 10;
+
+    background: #FFFFFF;
+    border-radius: 5px; /* 同搜尋框圓角 */
+    box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.1);
+    margin-top: 5px; /* 與輸入框間距 */ 
+}
+
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px; /* 內部留白 */
+    gap: 5px; /* 項目之間的間距 */
+}
+
+.category-item {
+    color: #000000;
+    font-size: 14px;
+    padding: 8px 0px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s; /*顏色漸變*/
+    text-align: center;
+}
+
+.category-item:hover {
+    background-color: #EEEEEE; /* 滑過時的淺灰色背景 */
+}
+
+.mrt-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 3vh auto;
+    padding: 0 15px;
+    display: flex; /* 讓箭頭和列表並排 */
+    align-items: center; 
+    box-sizing: border-box;
+}
+
+.mrt-list-wrapper {
+    flex-grow: 1; /* 佔據容器內剩餘空間 */
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 0.5vw;   /* 增加左右間距，拉開與按鈕的距離 */
+
+    /* AI建議使用 */
+    -webkit-overflow-scrolling: touch; /* 提升 iOS 上的捲動體驗 */
+    /* 隱藏捲軸（可選，使設計更美觀） */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+.mrt-list-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* 列表內容樣式 */
+#mrt-list {
+    display: flex; /* 讓列表項目水平排列 */
+    align-items: center;
+    list-style: none; /* 去掉列表的點 */
+    padding: 0;
+    margin: 0;
+}
+
+/* 列表項目樣式 */
+.mrt-item {
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666666;
+    flex-shrink: 0; /* 防止站名被擠壓變形 */
+}
+
+.mrt-item:hover {
+    color: #000000;
+}
+
+.mrt-item:first-child {
+    padding-left: 5px; /* 縮減第一個項目的左側留白 */
+}
+
+.mrt-item:last-child {
+    padding-right: 5px; /* 縮減最後一個項目的右側留白 */
+}
+
+/* 箭頭樣式 */
+.mrt-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+main {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.attraction-container {
+    display: grid;
+    /* 自動填滿、最小 270px、最大平均分配 */
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 30px; /* 卡片間距 */
+    padding: 0 15px 40px 15px;
+}
+
+/* 卡片外框 */
+.attraction-item {
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    overflow: hidden; /* 確保內部的圖片圓角不會超出 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 圖片容器：relative */
+.attraction-image-box {
+    position: relative; 
+    width: 100%;
+    height: 200px; 
+}
+
+.attraction-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 防止圖片被壓扁或拉長 */
+}
+
+/* 景點名稱標籤：使用 absolute 定位 */
+.attraction-name-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* 橫跨整個圖片底部 */
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6); 
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
+}
+
+/* 下方文字資訊區 */
+.attraction-info {
+    display: flex;
+    justify-content: space-between; /* 讓捷運站靠左，分類靠右 */
+    padding: 15px;
+    color: #757575;
+}
+
+.footer {
+    width: 100%;
+    height: 104px;
+    background-color: #757575;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; 
+}
+
+.footer p {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* RWD */
+@media (max-width: 600px) {
+
+    .hero {
+        height: 320px;
+        background-size: auto 100%;
+        background-position: center; /* 圖片中心對齊 */
+        background-image: url('/static/images/welcome_mobile_cut.png'); /* 確保路徑正確 */
+    }
+
+    .search-box {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .search-box input {
+    flex: 1;      /* 自動佔滿剩餘空間，彈性伸縮 */
+    min-width: 0; /* 防止被預設最小寬度撐開 */
+}
+
+    /* 調整 Mobile 上的箭頭樣式或讓其更小 */
+    .mrt-arrow {
+        font-size: 16px;
+        width: 30px;         /* 縮小按鈕寬度 、寬度*/
+        height: 30px;        
+        padding: 5px;        
+
+        /* 視覺上箭頭可能很小，但透過透明背景增加點擊範圍 */
+        min-width: 44px;  /* 蘋果與 Google 建議的最小觸控大小為 44px */
+        min-height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .left-arrow {
+        left: 5px;  /* 讓左箭頭更靠近邊緣 */
+    }
+    .right-arrow {
+        right: 5px; /* 讓右箭頭更靠近邊緣 */
+    }
+
+
+}
