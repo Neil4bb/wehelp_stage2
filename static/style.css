@@ -39,6 +39,11 @@
     cursor: pointer;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* hero */
 .hero {
     width: 100%;
@@ -234,6 +239,12 @@ main {
     overflow: hidden; /* 確保內部的圖片圓角不會超出 */
     display: flex;
     flex-direction: column;
+}
+
+.attraction-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 /* 圖片容器：relative */
