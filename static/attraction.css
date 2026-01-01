@@ -1,0 +1,361 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans TC", sans-serif;
+    color: #666666;
+}
+
+/* nav */
+.navbar {
+    width: 100%;
+    height: 54px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: sticky; /* 固定在頂部 */
+    top: 0;
+    z-index: 100;    /* 確保導覽列永遠在最上層 */
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 0 15px;    /* 預防手機版文字貼邊 */
+    display: flex;
+    justify-content: space-between; /* Logo 靠左 Menu 靠右 */
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #448899;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px; /* 兩個選項之間的間距 */
+}
+
+.nav-item {
+    font-size: 16px;
+    color: #666666;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 上層容器 */
+.attraction-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 24px auto 32px;
+    width: 90%;
+    /* ❌ 不要固定高度，讓內容自己撐高 */
+    /* height: 45vh; */
+    /* min-height: 300px; */
+
+    
+}
+
+/* 左側圖片 */
+.slideshow-container {
+    position: relative;
+    flex: 1.9 1 0;
+    max-width: 540px;          /* 可以依照 Figma 大概抓一個最大寬度 */
+    aspect-ratio: 4 / 3;       /* 只保留比例，讓高度跟著寬度走 */
+    overflow: hidden;
+    margin: 0;
+}
+
+
+
+
+.image-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;              /* 垂直置中 */
+    transform: translateY(-50%);
+
+    width: 36px;           /* 給固定寬高 防止被壓縮 */
+    height: 36px;
+
+    z-index: 20;           /* 確保在線段與圖片之上 */
+    
+    background-size: contain;  /*箭頭圖標自動縮放填滿按鈕*/
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; /*去除背景色*/
+    border: none;
+    outline: none;
+    cursor: pointer;
+    
+}
+
+.left-arrow {
+    left: 10px;
+    background-image: url("/static/images/btn_leftArrow.png"); 
+}
+
+.right-arrow {
+    right: 10px;
+    background-image: url("/static/images/btn_rightArrow.png");
+}
+
+/* 1. 線段的總容器：固定在圖片底部 */
+.indicators-container {
+    position: absolute;
+    bottom: 0;          
+    left: 0;            
+    right: 0;
+    padding: 0;
+    
+    
+    display: flex;         
+   
+    z-index: 10;           /* 確保在圖片上方 */
+}
+
+/* 2. 個別線段的預設樣式 (未選中) */
+.indicator-bar {
+    flex: 1;               /* 關鍵：N張圖片就會自動把寬度等分為N份 */
+    height: 5px;
+    background-color: #FFFFFF;
+    opacity: 0.4;
+}
+
+/* 3. 當前選中圖片的樣式 (Active) */
+.indicator-bar.active {
+    opacity: 1;            /* 讓選中的圖片線段變為不透明 */
+    background-color: #000000;
+}
+
+
+/* 右側資訊欄+訂購 */
+.attraction-info {
+    flex: 2 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+}
+
+#attr-name {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+#attr-cat-mrt {
+   margin: 0;
+}
+
+.booking-panel {
+    
+    background-color: #E8E8E8;
+    margin-top: 0;
+    padding: 16px 18px;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.booking-form p {
+    margin: 0;  /*清除p tag預設行距*/
+    
+}
+
+#booking-date {
+    width: 193px;
+    height: 35px;
+    padding: 0 10px;
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/*隱藏原生 radio 樣式*/
+.form-group input[type="radio"] {
+    display:none;
+}
+
+/*建立自定義radio樣式*/
+.radio-label {
+    position: relative;
+    padding-left: 30px; /* 為自定義圓圈留空間 */
+    margin-right: 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666666;
+}
+
+/*  使用 ::before 畫出「外層空心圓」 */
+/* 只有具備 .radio-label 的標籤才會畫圓，所以「選擇時間」標題不會被抓到 */
+.radio-label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    background-color: white; /* 內部填白 */
+    border: 2px solid white;  /* 或者根據設計稿設為灰色 */
+    border-radius: 50%;
+}
+
+/*  使用 ::after 畫出「選中時內層的綠色實心點」 */
+/* 邏輯：當 radio 被選中時，找它後面的 .radio-label 並啟動 ::after */
+input[type="radio"]:checked + .radio-label::after {
+    content: "";
+    position: absolute;
+    left: 4px;      /* 調整位置使其居中 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-color: #448899; 
+    border-radius: 50%;
+}
+
+.start-booking-btn {
+    width: 154px;
+    height: 36px;
+    padding: 0;
+    line-height: 36px; /* 讓行高等於容器高度，強制垂直置中 */
+    border-radius: 5px;
+    border: none;
+
+    background-color: #448899;
+    color: #FFFFFF;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 17px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease; /* 顏色切換更平滑 */
+}
+
+.start-booking-btn:hover {
+    background-color: #337788;
+}
+
+hr {
+    max-width: 1200px;
+    width: 95%;
+    margin: 1vh auto;
+
+    border: 0;
+    height: 1px;
+    background-color: #E8E8E8;
+}
+
+.attraction-details {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+#attr-description {
+    padding-bottom: 2vh;
+    line-height: 1.6;    /* 調整行高 */
+
+}
+
+.detail-group h3 {
+    margin-top: 1.2vh;    
+    margin-bottom: 0.5vh;   /* 縮短標題與下方文字的距離 */
+
+    font-weight: 600;
+}
+
+.detail-group p {
+    margin-top: 0;       
+    margin-bottom: 1.2vh;  /* 段落與下一個區塊的距離 */
+    line-height: 1.6;    
+}
+
+.footer {
+    width: 100%;
+    height: 104px;
+    background-color: #757575;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; 
+}
+
+.footer p {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* ---手機板 RWD --- */
+@media (max-width: 600px) {
+    .attraction-container {
+        flex-direction: column;
+        height: auto;
+        max-height: none;
+        gap: 0;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .slideshow-container {
+        flex: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        aspect-ratio: 9 / 7;
+    }
+
+    .attraction-info {
+        flex: none;
+        width: 95%;
+        margin: 20px auto;
+        padding: 5px;
+        box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
+    }
+    
+    .booking-form {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+

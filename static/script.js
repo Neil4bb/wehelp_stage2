@@ -102,21 +102,27 @@ function renderAttractions(list) {
 
         //建立骨架
         card.innerHTML = `
-            <div class="attraction-image-box">
-                <img class="attr-img" src="" alt="">
-                <div class="attraction-name-tag"></div>
-            </div>
-            <div class="attraction-info">
-                <span class= "mrt-text"></span>
-                <span class= "cat-text"></span>
-            </div>
+        <a class="attraction-link" href="">
+                <div class="attraction-image-box">
+                    <img class="attr-img" src="" alt="">
+                    <div class="attraction-name-tag"></div>
+                </div>
+                <div class="attraction-info">
+                    <span class= "mrt-text"></span>
+                    <span class= "cat-text"></span>
+                </div>
+        </a>
         `;
 
         //填入資料
+        const linkTag = card.querySelector(".attraction-link");
+        linkTag.href = `/attraction/${item.id}`;
+
         card.querySelector(".attr-img").src = item.images[0];
         card.querySelector(".attraction-name-tag").textContent = item.name;
         card.querySelector(".mrt-text").textContent = item.mrt || "無捷運站";
         card.querySelector(".cat-text").textContent = item.category;
+
 
         attractionContainer.appendChild(card);
     });
