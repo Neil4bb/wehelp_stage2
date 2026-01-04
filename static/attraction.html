@@ -11,6 +11,7 @@
   
   <link rel="stylesheet" href="/static/attraction.css">
   <script defer src="/static/attraction.js"></script>
+  <script defer src="/static/auth.js"></script>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
       </a>
       <div class="nav-menu">
         <div class="nav-item">預定行程</div>
-        <div class="nav-item">登入/註冊</div>
+        <div class="nav-item" id="navLogin">登入/註冊</div>
       </div>
     </div>
   </nav>
@@ -100,6 +101,56 @@
   <footer class="footer">
     <p>COPYRIGHT © 2021 台北一日遊</p>
   </footer>
+
+  <div id="authModal" class="auth-modal hidden">
+
+    <div class="auth-panel">
+
+      <!-- 頂部漸層 -->
+      <div class="auth-top-bar"></div>
+
+      <!-- 關閉按鈕 -->
+      <span class="auth-close" onclick="closeAuthModal()"><img src="/static/images/x.png" alt=""></span>
+
+      <!--  登入表單（預設顯示） -->
+      <div id="loginSection">
+
+        <h3 class="auth-title">登入會員帳號</h3>
+
+        <input id="loginEmail" type="email" placeholder="輸入電子郵件">
+        <input id="loginPassword" type="password" placeholder="輸入密碼">
+
+        <button class="auth-button" onclick="handleLogin()">登入帳戶</button>
+
+        <div id="loginMessage" class="auth-message"></div>
+
+        <div class="auth-switch">
+          還沒有帳戶？
+          <span onclick="switchToSignup()">點此註冊</span>
+        </div>
+      </div>
+
+      <!--  註冊表單（預設隱藏） -->
+      <div id="signupSection" class="hidden">
+
+        <h3 class="auth-title">註冊會員帳號</h3>
+
+        <input id="signupName" type="text" placeholder="輸入姓名">
+        <input id="signupEmail" type="email" placeholder="輸入電子郵件">
+        <input id="signupPassword" type="password" placeholder="輸入密碼">
+
+        <button class="auth-button" onclick="handleSignup()">註冊新帳戶</button>
+
+        <div id="signupMessage" class="auth-message"></div>
+
+        <div class="auth-switch">
+          已經有帳戶了？
+          <span onclick="switchToLogin()">點此登入</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </body>
 </html>
