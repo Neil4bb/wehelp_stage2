@@ -344,3 +344,133 @@ main {
 
 
 }
+
+/*pop-up modal*/
+
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.auth-panel {
+    background: #ffffff;
+    padding: 24px 28px 20px;
+    border-radius: 5px;
+    width: 340px;
+    box-shadow: 0 4px 60px rgba(170, 170, 170, 0.6);
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden; 
+}
+
+.auth-top-bar {
+    position: absolute;
+    width: 340px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(270deg, #337788, #66AABB);
+}
+
+/* 關閉按鈕 */
+.auth-close {
+  position: absolute;
+  top: 22px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.auth-close img {
+    width: 16px;
+    height: 16px;
+    padding: 7px;
+}
+
+.auth-title {
+    margin: 0;
+    padding: 0;
+    line-height: 1.1;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #666666;
+}
+
+#loginSection,
+#signupSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#loginSection input,
+#signupSection input {
+    width: 100%;
+    height: 47px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px solid #cccccc;
+    padding: 15px;
+    font-size: 16px;
+}
+
+#loginSection input:focus,
+#signupSection input:focus {
+  outline: none;
+}
+
+/* 送出按鈕 */
+.auth-button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #448899;
+    color: #FFFFFF;
+    font-size: 19px;
+    font-weight: 400;
+    cursor: pointer;
+    
+}
+
+.auth-button:hover {
+    background: #336b73;
+}
+
+/* 訊息文字 */
+.auth-message {
+    font-size: 16px;
+}
+
+/* 沒文字時不顯示、也不佔高度 */
+.auth-message:empty {
+  display: none;
+}
+
+/* 底部切換文字：點此註冊 / 點此登入 */
+.auth-switch {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: #666666;
+}
+
+.auth-switch span {
+    cursor: pointer;
+}
+
+.auth-switch span:hover {
+    text-decoration: underline;
+}
+
+/* 共用 hidden class */
+.hidden {
+  display: none !important;
+}

@@ -1,22 +1,18 @@
 from fastapi import *
 from fastapi.responses import FileResponse,JSONResponse
-import mysql.connector
-import os
-from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
+from database import get_connection # 改用 database.py 的連線
+from user import router as user_router
 
 app=FastAPI()
-load_dotenv()
+# ----------------------------------------------------
+# 掛載 User API 路由 (這行會把 user.py 裡的路徑併入)
+# ----------------------------------------------------
+app.include_router(user_router)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-def get_connection():
-	return mysql.connector.connect(
-		host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME")
-	)
+
 
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
