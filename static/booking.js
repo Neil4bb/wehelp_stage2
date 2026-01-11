@@ -96,18 +96,28 @@ function renderBooking(bookingData) {
   const infoEl = document.getElementById("bookingInfo");
   const checkoutBar = document.getElementById("checkoutBar");
   const totalPriceEl = document.getElementById("totalPrice");
+  const dividerEl = document.querySelector(".divider"); // ✅ 直接抓 hr
 
   if (!bookingData) {
-    if (statusEl) statusEl.textContent = "目前沒有預定行程";
+    // ✅ 空狀態：隱藏多餘區塊 + 套用空狀態樣式
+    document.body.classList.add("empty-state");
+
+    if (statusEl) statusEl.textContent = "目前沒有待預定的行程";
     if (infoEl) infoEl.style.display = "none";
     if (checkoutBar) checkoutBar.style.display = "none";
+    if (dividerEl) dividerEl.style.display = "none";
     return;
   }
 
   // 有 booking
+
+  // ✅ 有 booking：恢復顯示 + 移除空狀態樣式
+  document.body.classList.remove("empty-state");
+
   if (statusEl) statusEl.textContent = "";
   if (infoEl) infoEl.style.display = "flex";
   if (checkoutBar) checkoutBar.style.display = "flex";
+  if (dividerEl) dividerEl.style.display = "block";
 
   // attraction
   const name = bookingData.attraction?.name ?? "";

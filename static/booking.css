@@ -3,6 +3,10 @@ body {
     padding: 0;
     font-family: "Noto Sans TC", sans-serif;
     color: #666666;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* nav */
@@ -172,6 +176,37 @@ a {
 .checkout-btn:hover{
   filter: brightness(0.95);
 }
+
+/* =========================
+   Empty State（沒有預定行程）
+   ========================= */
+
+
+
+body.empty-state .booking-page {
+  padding-bottom: 0;          /* 避免原本 60px 底部空白 */
+}
+
+/* 空狀態文字置中：用「固定高度區塊 + 置中」做，不用 flex 撐滿整頁 */
+body.empty-state .booking-empty {
+  height: 80px;              /* ✅ 白色區域想高/想矮就調這個 */
+  display: flex;
+  align-items: center;
+  margin: 0;                  /* 清掉原本 margin */
+}
+
+/* footer 吃滿剩下高度 + 文字靠上 */
+body.empty-state .footer {
+  flex: 1;                    /* ✅ 只讓 footer 吃剩餘高度 */
+  height: auto;
+  min-height: 104px;
+  margin-top: 0;
+  align-items: flex-start;    /* ✅ 文字靠上 */
+  padding-top: 45px;          /* ✅ 文字離上緣距離，可調 */
+  box-sizing: border-box;
+}
+
+.footer p { margin: 0; }
 
 /* RWD */
 @media (max-width: 600px){
