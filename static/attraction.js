@@ -149,9 +149,77 @@ function setupBookingPriceListener() {
     });
 
 }
+//----------------------------------------------
+function setupStartBookingListener() {
+  const btn = document.querySelector(".start-booking-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", handleStartBooking);
+}
+
+async function handleStartBooking() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    openAuthModal();
+    return;
+  }
+
+  // 1) attractionId
+  const attractionIdValue = Number(attractionId);
+
+  // 2) date
+  const date = document.getElementById("booking-date")?.value;
+  if (!date) {
+    alert("請選擇日期");
+    return;
+  }
+
+  // 3) time
+  const time = document.querySelector('input[name="time"]:checked')?.value;
+  if (!time) {
+    alert("請選擇時間");
+    return;
+  }
+
+  // 4) price
+  const priceText = document.getElementById("booking-price")?.textContent;
+  const price = Number(priceText);
+
+  try {
+    const res = await fetch("/api/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        attractionId: attractionIdValue,
+        date,
+        time,
+        price
+      })
+    });
+
+    const data = await res.json().catch(() => null);
+
+    if (res.ok && data && data.ok === true) {
+      window.location.href = "/booking";
+      return;
+    }
+
+    alert(data?.message || "預訂失敗");
+  } catch (err) {
+    console.error("POST /api/booking error:", err);
+    alert("預訂失敗");
+  }
+}
+
+
+//----------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchAttraction();
     setupBookingPriceListener();
     setupSlideShowListener();
+    setupStartBookingListener();
 });

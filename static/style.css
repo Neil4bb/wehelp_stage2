@@ -348,13 +348,13 @@ main {
 /*pop-up modal*/
 
 .auth-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
 .auth-panel {
@@ -381,10 +381,10 @@ main {
 
 /* 關閉按鈕 */
 .auth-close {
-  position: absolute;
-  top: 22px;
-  right: 12px;
-  cursor: pointer;
+    position: absolute;
+    top: 22px;
+    right: 12px;
+    cursor: pointer;
 }
 
 .auth-close img {
@@ -423,7 +423,7 @@ main {
 
 #loginSection input:focus,
 #signupSection input:focus {
-  outline: none;
+    outline: none;
 }
 
 /* 送出按鈕 */
@@ -451,7 +451,7 @@ main {
 
 /* 沒文字時不顯示、也不佔高度 */
 .auth-message:empty {
-  display: none;
+    display: none;
 }
 
 /* 底部切換文字：點此註冊 / 點此登入 */
@@ -472,5 +472,5 @@ main {
 
 /* 共用 hidden class */
 .hidden {
-  display: none !important;
+    display: none !important;
 }
