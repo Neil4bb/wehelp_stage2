@@ -4,8 +4,125 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/booking.css" />
+  <script defer src="/static/booking.js"></script>
+  <script defer src="/static/auth.js"></script>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-container">
+      
+      <a href="/">
+        <div class="nav-logo">台北一日遊</div>
+      </a>
+
+      <div class="nav-menu">
+        <div class="nav-item" id="navBooking">預定行程</div>
+        <div class="nav-item" id="navLogin">登入/註冊</div>
+      </div>
+    </div>
+  </nav>
   
+  <main class="booking-page">
+    <div class="container">
+      <h2 class="booking-title">您好，<span id="userName">會員</span>，待預定的行程如下：</h2>
+
+      <!-- 沒有預定行程 -->
+      <div id="bookingStatus" class="booking-empty"></div>
+
+      <!-- 有預定行程 -->
+      <section id="bookingInfo" class="booking-card" style="display:none;">
+        <!-- 刪除 icon -->
+        <button id="deleteBookingBtn" class="booking-delete-icon" type="button" aria-label="刪除預定行程">
+          <img src="/static/images/delete.png" alt="刪除預定行程">
+        </button>
+
+        <!-- 左圖 -->
+        <div class="booking-left">
+          <img id="attrImage" class="booking-image" alt="attraction" />
+        </div>
+
+        <!-- 右文 -->
+        <div class="booking-right">
+          <div class="booking-subtitle">台北一日遊：<span id="attrName"></span></div>
+
+          <div class="booking-row"><span class="label">日期：</span><span id="bookDate"></span></div>
+          <div class="booking-row"><span class="label">時間：</span><span id="bookTime"></span></div>
+          <div class="booking-row"><span class="label">費用：</span><span id="bookPrice"></span></div>
+          <div class="booking-row"><span class="label">地點：</span><span id="attrAddress"></span></div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- 底部總價 + 按鈕（先不做功能） -->
+      <section id="checkoutBar" class="checkout-bar" style="display:none;">
+        <div class="checkout-total">總價：新台幣 <span id="totalPrice">0</span> 元</div>
+        <button id="payBtn" class="checkout-btn" type="button">確認訂購並付款</button>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>COPYRIGHT © 2021 台北一日遊</p>
+  </footer>
+
+
+
+  <div id="authModal" class="auth-modal hidden">
+
+    <div class="auth-panel">
+
+      <!-- 頂部漸層 -->
+      <div class="auth-top-bar"></div>
+
+      <!-- 關閉按鈕 -->
+      <span class="auth-close" onclick="closeAuthModal()"><img src="/static/images/x.png" alt=""></span>
+
+      <!--  登入表單（預設顯示） -->
+      <div id="loginSection">
+
+        <h3 class="auth-title">登入會員帳號</h3>
+
+        <input id="loginEmail" type="email" placeholder="輸入電子郵件">
+        <input id="loginPassword" type="password" placeholder="輸入密碼">
+
+        <button class="auth-button" onclick="handleLogin()">登入帳戶</button>
+
+        <div id="loginMessage" class="auth-message"></div>
+
+        <div class="auth-switch">
+          還沒有帳戶？
+          <span onclick="switchToSignup()">點此註冊</span>
+        </div>
+      </div>
+
+      <!--  註冊表單（預設隱藏） -->
+      <div id="signupSection" class="hidden">
+
+        <h3 class="auth-title">註冊會員帳號</h3>
+
+        <input id="signupName" type="text" placeholder="輸入姓名">
+        <input id="signupEmail" type="email" placeholder="輸入電子郵件">
+        <input id="signupPassword" type="password" placeholder="輸入密碼">
+
+        <button class="auth-button" onclick="handleSignup()">註冊新帳戶</button>
+
+        <div id="signupMessage" class="auth-message"></div>
+
+        <div class="auth-switch">
+          已經有帳戶了？
+          <span onclick="switchToLogin()">點此登入</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>

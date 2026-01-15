@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, Header, Request
 from pydantic import BaseModel, EmailStr, constr
 from database import get_connection
+from fastapi.responses import JSONResponse
+
 
 router = APIRouter()
 
@@ -63,7 +65,7 @@ async def signup(request: SignUpRequest):
         raise HTTPException(status_code=500, detail="伺服器內部錯誤，請稍後再試")
         
     finally:
-        # 無論成功或失敗，最後一定要關閉游標與連線，避免佔用資源
+        
         cursor.close()
         conn.close()
 
@@ -129,3 +131,24 @@ async def get_user_status(request: Request):
     except jwt.PyJWTError:
         # 如果 Token 被竄改、過期，就回傳 null
         return {"data": None}
+    
+# ------------------------------------------------------
+def require_user(request: Request):
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        # 未登入 >> 403
+        raise HTTPException(
+            status_code=403,
+            detail={"error": True, "message": "未登入系統，請先登入"}
+        )
+    
+    token = auth_header.split(" ")[1]
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY,algorithms=[ALGORITHM])
+        return payload
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": True, "message": "未登入系統，請先登入"}
+        )

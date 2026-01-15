@@ -3,12 +3,14 @@ from fastapi.responses import FileResponse,JSONResponse
 from fastapi.staticfiles import StaticFiles
 from database import get_connection # 改用 database.py 的連線
 from user import router as user_router
+from booking import router as booking_router
 
 app=FastAPI()
 # ----------------------------------------------------
 # 掛載 User API 路由 (這行會把 user.py 裡的路徑併入)
 # ----------------------------------------------------
 app.include_router(user_router)
+app.include_router(booking_router)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

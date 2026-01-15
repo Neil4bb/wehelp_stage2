@@ -220,3 +220,13 @@ async function initAuth() {
 }
 
 initAuth();
+
+
+document.getElementById("navBooking")?.addEventListener("click", () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    openAuthModal();
+    return;
+  }
+  window.location.href = "/booking";
+});
