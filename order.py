@@ -5,6 +5,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from database import get_connection
 from user import require_user
+import traceback
 
 
 router = APIRouter()
@@ -107,6 +108,7 @@ async def create_order(request: Request):
         return {"data": {"number": order_number}}
     
     except Exception as e:
+        traceback.print_exc()
         conn.rollback()
         return JSONResponse(status_code=500, content={"error": True, "message":"伺服器內部錯誤"})
     finally:
