@@ -1,3 +1,6 @@
+console.log("TPDirect:", window.TPDirect);
+
+
 document.addEventListener("DOMContentLoaded", () => {
   initBookingPage();
 });
@@ -167,4 +170,117 @@ async function deleteBooking(token) {
     console.error("deleteBooking error:", err);
     return false;
   }
+}
+
+
+//---------確認付款-----------
+
+
+//-----------------TP---------------------
+
+const payBtn = document.getElementById("payBtn");
+
+// ===== 0) 填入 TapPay Sandbox App 資訊 =====
+const TAPPAY_APP_ID = 166608; 
+const TAPPAY_APP_KEY = "app_6Sg1dNzpN9HGTkf3clr2XkxDI6poCdIne8bASCJXJbRTKNodL6WUXHaqX6ce";
+
+// ===== 1) 初始化 TapPay SDK（sandbox）=====
+TPDirect.setupSDK(TAPPAY_APP_ID, TAPPAY_APP_KEY, "sandbox");
+
+// ===== 2) 設定卡片欄位 (iframe) =====
+TPDirect.card.setup({
+  fields: {
+    number: { element: "#card-number", placeholder: "**** **** **** ****" },
+    expirationDate: { element: "#card-expiration-date", placeholder: "MM / YY" },
+    ccv: { element: "#card-cvv", placeholder: "CVV" }
+  },
+  styles: {
+    "input": { "font-size": "16px" },
+    ".valid": { "color": "green" },
+    ".invalid": { "color": "red" }
+  }
+});
+
+// ===== 3) 付款按鈕綁定：先拿 prime，再呼叫 /api/orders =====
+
+if (payBtn) {
+  payBtn.addEventListener("click", async () => {
+    
+    // 檢查登入 token
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("請先登入");
+      return;
+    }
+    
+    //  檢查卡片欄位
+    const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+    if (!tappayStatus.canGetPrime) {
+      alert("信用卡資訊尚未填寫完成或格式錯誤");
+      return;
+    }
+
+    //  取得 prime
+    TPDirect.card.getPrime(async (result) => {
+      if (result.status !== 0) {
+        console.log("getPrime failed:", result);
+        alert("取得 prime 失敗，請稍後再試");
+        return;
+      }
+
+      const prime = result.card.prime;
+      console.log("prime:", prime); 
+
+      //  組 payload：prime + order + contact
+      const bookingRes = await fetch("/api/booking",{
+        headers: {"Authorization": `Bearer ${token}`}
+      });
+
+      const bookingData = await bookingRes.json();
+
+      const trip = {
+        attraction: bookingData.data.attraction,
+        date: bookingData.data.date,
+        time: bookingData.data.time
+      };
+
+      const price = bookingData.data.price;
+
+      const payload = {
+        prime,
+        order: {
+          price: price,
+          trip: trip
+        },
+        contact: {
+          name: document.querySelector("#contactName")?.value || "test",
+          email: document.querySelector("#contactEmail")?.value || "test@example.com",
+          phone: document.querySelector("#contactPhone")?.value || "0912345678"
+        }
+      };
+
+      // 呼叫後端 /api/orders
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data && data.data && data.data.number) {
+        //  成功導向 thankyou
+        window.location.href = `/thankyou?number=${encodeURIComponent(data.data.number)}`;
+        return;
+      }
+
+      console.log("create order failed:", res.status, data);
+      alert("建立訂單失敗，請稍後再試");
+    });
+  });
+} else {
+  console.warn("找不到付款按鈕，請確認按鈕 id");
 }

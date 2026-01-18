@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/static/booking.css" />
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.18.0"></script>
   <script defer src="/static/booking.js"></script>
   <script defer src="/static/auth.js"></script>
 </head>
@@ -59,6 +60,76 @@
       </section>
 
       <hr class="divider" />
+
+      <section class="contact-section">
+        <h3 class="section-title">您的聯絡資訊</h3>
+
+        <div class="contact-form">
+          <div class="form-row">
+            <label class="form-label" for="contactName">聯絡姓名：</label>
+            <input
+              class="form-input"
+              type="text"
+              id="contactName"
+              name="contactName"
+              placeholder="請輸入姓名"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="contactEmail">聯絡信箱：</label>
+            <input
+              class="form-input"
+              type="email"
+              id="contactEmail"
+              name="contactEmail"
+              placeholder="請輸入Email"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="contactPhone">手機號碼：</label>
+            <input
+              class="form-input"
+              type="tel"
+              id="contactPhone"
+              name="contactPhone"
+              placeholder="請輸入手機號碼"
+            />
+          </div>
+
+          <p class="contact-hint">
+            請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
+          </p>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- 信用卡資訊（TapPay） -->
+      <section class="payment-section">
+        <h3 class="section-title">信用卡付款資訊</h3>
+
+        <div class="payment-form">
+          <div class="form-row">
+            <label class="form-label">卡片號碼：</label>
+            <div id="card-number" class="tp-field"></div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">過期時間：</label>
+            <div id="card-expiration-date" class="tp-field"></div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">驗證密碼：</label>
+            <div id="card-cvv" class="tp-field"></div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
 
       <!-- 底部總價 + 按鈕（先不做功能） -->
       <section id="checkoutBar" class="checkout-bar" style="display:none;">
