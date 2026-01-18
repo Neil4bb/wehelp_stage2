@@ -99,7 +99,8 @@ function renderBooking(bookingData) {
   const infoEl = document.getElementById("bookingInfo");
   const checkoutBar = document.getElementById("checkoutBar");
   const totalPriceEl = document.getElementById("totalPrice");
-  const dividerEl = document.querySelector(".divider"); // ✅ 直接抓 hr
+  const extraSection = document.getElementById("bookingExtraSection");
+
 
   if (!bookingData) {
     // ✅ 空狀態：隱藏多餘區塊 + 套用空狀態樣式
@@ -108,7 +109,9 @@ function renderBooking(bookingData) {
     if (statusEl) statusEl.textContent = "目前沒有待預定的行程";
     if (infoEl) infoEl.style.display = "none";
     if (checkoutBar) checkoutBar.style.display = "none";
-    if (dividerEl) dividerEl.style.display = "none";
+
+    if (extraSection) extraSection.style.display = "none";
+
     return;
   }
 
@@ -120,7 +123,9 @@ function renderBooking(bookingData) {
   if (statusEl) statusEl.textContent = "";
   if (infoEl) infoEl.style.display = "flex";
   if (checkoutBar) checkoutBar.style.display = "flex";
-  if (dividerEl) dividerEl.style.display = "block";
+
+  if (extraSection) extraSection.style.display = "block";
+
 
   // attraction
   const name = bookingData.attraction?.name ?? "";
