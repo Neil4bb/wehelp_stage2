@@ -102,6 +102,7 @@ async def create_order(request: Request):
         # 6 成功才把order改 paid，失敗維持unpaid
         if tappay_status == 0:
             cursor.execute("UPDATE orders SET status = 1 WHERE id = %s",(order_id,))
+            cursor.execute("DELETE FROM booking WHERE member_id = %s", (user_id,))
         conn.commit()
 
         #7 回傳 order number (成功/失敗都回傳)
