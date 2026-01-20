@@ -151,6 +151,91 @@ a {
   border-top: 1px solid #e6e6e6;
 }
 
+/* ====== 聯絡資訊 ====== */
+.contact-section {
+  max-width: 980px;               
+  margin: 0 auto 40px;
+  padding: 0 10px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.contact-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.form-label {
+  width: 90px;         
+  flex: 0 0 90px;
+  font-size: 14px;
+  color: #333;
+  text-align: right;    /* ✅ 這行會更像 Figma：冒號靠近輸入框 */
+  white-space: nowrap;  /* ✅ 防止 label 換行 */
+}
+
+.form-input {
+  flex: 0 0 30%;  
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #666;
+}
+
+.contact-hint {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* ====== 信用卡付款區塊（對齊聯絡資訊樣式） ====== */
+
+.payment-section {
+  max-width: 980px;
+  margin: 0 auto 40px;
+  padding: 0 10px;
+}
+
+.payment-form {
+  width: 100%;
+}
+
+/* 共用 form-row / form-label（跟聯絡資訊同一套） */
+
+
+.tp-field {
+  flex: 0 0 33%;
+  height: 30px;
+  padding: 0;                
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* TapPay iframe 內 input 的視覺 */
+.tp-field iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .checkout-bar{
   margin: 0 0 60px;
   display: flex;
@@ -227,6 +312,25 @@ body.empty-state .footer {
     right: 16px;      /* 靠右 */
   }
 
+  .form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-label {
+  width: 72px;          /* 固定 label 寬 */
+  flex: 0 0 72px;
+}
+
+.form-input {
+  flex: 0 0 60%;       
+}
+
+.tp-field {
+  flex: 0 0 63%;
+}
+  
   .checkout-bar{
     justify-content: space-between;
   }

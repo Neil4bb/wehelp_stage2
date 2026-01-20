@@ -4,6 +4,10 @@ from fastapi.staticfiles import StaticFiles
 from database import get_connection # 改用 database.py 的連線
 from user import router as user_router
 from booking import router as booking_router
+from order import router as order_router
+import time
+from user import require_user
+
 
 app=FastAPI()
 # ----------------------------------------------------
@@ -11,6 +15,7 @@ app=FastAPI()
 # ----------------------------------------------------
 app.include_router(user_router)
 app.include_router(booking_router)
+app.include_router(order_router)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -306,8 +311,6 @@ async def get_mrts():
 
 
 
+
 	
 
-#@app.get("/api/attractions")
-#def test():
-#    return {"status": "API loaded!"}
