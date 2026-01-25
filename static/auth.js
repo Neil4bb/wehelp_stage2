@@ -7,10 +7,24 @@ function getNavLoginElement() {
 
 async function handleSignup() {
     // 1. 抓取 HTML 輸入框的值 (請確保你的 HTML id 正確)
-    const name = document.querySelector("#signupName").value;
-    const email = document.querySelector("#signupEmail").value;
-    const password = document.querySelector("#signupPassword").value;
+    const name = document.querySelector("#signupName").value.trim();
+    const email = document.querySelector("#signupEmail").value.trim();
+    const password = document.querySelector("#signupPassword").value.trim();
     const messageDiv = document.querySelector("#signupMessage"); // 顯示結果的文字區域
+
+    if (!name || !email || !password) {
+        messageDiv.textContent = "請填寫所有欄位";
+        return;
+    }
+    //empty check
+
+    const emailBasic = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // regex 前後//為定界符 ^ $為開頭結尾錨點 
+    // [^\s@]+ 表示一段(+)非(^)空白(\s)或@的字串([])
+    if (!emailBasic) {
+        messageDiv.textContent = "Email 格式不正確";
+        return;
+    }
 
     // 2. 使用 fetch 發送資料
     try {
@@ -56,9 +70,21 @@ async function handleSignup() {
 
 
 async function handleLogin() {
-    const email = document.querySelector("#loginEmail").value;
-    const password = document.querySelector("#loginPassword").value;
+    const email = document.querySelector("#loginEmail").value.trim();
+    const password = document.querySelector("#loginPassword").value.trim();
     const messageDiv = document.querySelector("#loginMessage");
+
+    if (!email || !password) {
+        messageDiv.textContent = "請輸入Email和密碼";
+        return;
+    }
+
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        messageDiv.textContent = "Email 格式不正確";
+        return;
+    }
+ 
 
     try {
         const response = await fetch("/api/user/auth", {

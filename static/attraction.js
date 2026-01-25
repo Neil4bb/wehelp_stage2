@@ -174,6 +174,17 @@ async function handleStartBooking() {
     return;
   }
 
+  // 新增日期判定
+  const selected = new Date(date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  //取今天日期設定為0點 可預訂當天行程
+
+  if (selected < today) {
+    alert("無法預訂過去日期的行程");
+    return;
+  }
+
   // 3) time
   const time = document.querySelector('input[name="time"]:checked')?.value;
   if (!time) {

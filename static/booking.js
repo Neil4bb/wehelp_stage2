@@ -229,11 +229,16 @@ if (payBtn) {
     TPDirect.card.getPrime(async (result) => {
       if (result.status !== 0) {
         console.log("getPrime failed:", result);
-        alert("取得 prime 失敗，請稍後再試");
+        alert("付款資訊取得失敗，請重新輸入信用卡資訊");
         return;
       }
+      // 當status === 0 TapPay已驗證所有卡片欄位 並成功產生prime
 
       const prime = result.card.prime;
+      if (!prime) {
+        alert("取得prime失敗，請稍後再試");
+        return;
+      }
       console.log("prime:", prime); 
 
       //  組 payload：prime + order + contact
@@ -251,6 +256,20 @@ if (payBtn) {
 
       const price = bookingData.data.price;
 
+      const contactName = document.querySelector("#contactName")?.value.trim() ?? "";
+      const contactEmail = document.querySelector("#contactEmail")?.value.trim() ?? "";
+      const contactPhone = document.querySelector("#contactPhone")?.value.trim() ?? "";
+
+      if(!contactName || !contactEmail || !contactPhone) {
+        alert("請填寫聯絡人姓名、Email及手機號碼");
+        return;
+      }
+
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+        alert("Email 格式不正確");
+        return;
+      }
+
       const payload = {
         prime,
         order: {
@@ -258,9 +277,9 @@ if (payBtn) {
           trip: trip
         },
         contact: {
-          name: document.querySelector("#contactName")?.value || "test",
-          email: document.querySelector("#contactEmail")?.value || "test@example.com",
-          phone: document.querySelector("#contactPhone")?.value || "0912345678"
+          name: contactName,
+          email: contactEmail,
+          phone: contactPhone
         }
       };
 
@@ -283,7 +302,7 @@ if (payBtn) {
       }
 
       console.log("create order failed:", res.status, data);
-      alert("建立訂單失敗，請稍後再試");
+      alert(data?.message || "建立訂單失敗");
     });
   });
 } else {

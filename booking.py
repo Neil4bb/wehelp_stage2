@@ -2,6 +2,8 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from database import get_connection
 from user import require_user
+from datetime import date as date_cls
+#將date改名 避免跟變數衝突
 
 router = APIRouter()
 
@@ -78,6 +80,17 @@ async def create_or_replace_booking(request: Request):
         if not attraction_id or not date or not time or price is None:
             return JSONResponse(status_code=400, content={"error": True, "message": "輸入不正確"})
         
+        # 日期格式/過去日期檢查
+        try:
+            booking_date = date_cls.fromisoformat(date)
+        except ValueError: # 只接ValueError date為不符合格式
+            raise HTTPException(status_code=400, detail="日期格式錯誤")
+        
+        today = date_cls.today()
+
+        if booking_date < today:
+            raise HTTPException(status_code=400, detail="日期不能是過去時間")
+
         conn = get_connection()
         cursor = conn.cursor()
 
