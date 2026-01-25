@@ -1,17 +1,17 @@
 import os, time, secrets
 import requests
 import json
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from database import get_connection
 from user import require_user
 import traceback
+import re
 
 
 router = APIRouter()
 
-TAPPAY_PARTNER_KEY = os.getenv("TAPPAY_PARTNER_KEY", "")
-TAPPAY_MERCHANT_ID = os.getenv("TAPPAY_MERCHANT_ID", "")
+
 TAPPAY_URL = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
 
 def generate_order_number() -> str:
@@ -19,6 +19,13 @@ def generate_order_number() -> str:
     return f"{time.strftime('%Y%m%d%H%M%S')}{secrets.token_hex(3)}"
 
 def call_tappay(prime: str, amount: int, contact: dict) -> dict:
+    TAPPAY_PARTNER_KEY = os.getenv("TAPPAY_PARTNER_KEY", "")
+    TAPPAY_MERCHANT_ID = os.getenv("TAPPAY_MERCHANT_ID", "")
+
+    if not TAPPAY_PARTNER_KEY or not TAPPAY_MERCHANT_ID:
+        raise RuntimeError("Missing TapPay credentials")
+    # RuntimeError為後端/環境錯誤
+    
     headers ={
         "Content-Type": "application/json",
         "x-api-key": TAPPAY_PARTNER_KEY
@@ -58,9 +65,37 @@ async def create_order(request: Request):
     trip = order.get("trip")  # 整包存json或拆欄位都可以  
     trip_json = json.dumps(trip, ensure_ascii=False)   
 
-    if not prime or amount <= 0 or not trip:
-        return JSONResponse(status_code=400, content={"error": True, "message": "訂單資料不完整"})
+    # prime驗證 (信用卡資訊)
+    if not isinstance(prime, str) or not prime.strip():
+        return JSONResponse(
+            status_code=400,
+            content={"error": True, "message": "信用卡資訊錯誤"}
+        )
     
+    #order 驗證 (價格/行程)
+    if amount <= 0 or not trip:
+        return JSONResponse(
+            status_code=400,
+            content={"error": True, "message": "訂單資料不完整"}
+        )
+
+    # contact 驗證
+    name = (contact.get("name") or "").strip()
+    email = (contact.get("email") or "").strip()
+    phone = (contact.get("phone") or "").strip()
+
+    if not name or not email or not phone:
+        return JSONResponse(
+            status_code=400,
+            content={"error": True, "message": "聯絡人資訊不完整"}
+        )
+    
+    if not re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", email):
+        return JSONResponse(
+            status_code=400,
+            content={"error": True, "message": "Email格式不正確"}   
+        )
+
     # 3建立 unpaid order
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -73,11 +108,7 @@ async def create_order(request: Request):
             INSERT INTO orders (number, user_id, price, trip_json, contact_name, contact_email, contact_phone, status)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """,
-            (
-                order_number, user_id, amount, trip_json,
-                contact.get("name"), contact.get("email"), contact.get("phone"),
-                0
-            )
+            (order_number, user_id, amount, trip_json, name, email, phone, 0)
         )
 
         order_id = cursor.lastrowid  # 自動取orders.id ,插入payments紀錄和更新orders.status用
@@ -103,10 +134,16 @@ async def create_order(request: Request):
         if tappay_status == 0:
             cursor.execute("UPDATE orders SET status = 1 WHERE id = %s",(order_id,))
             cursor.execute("DELETE FROM booking WHERE member_id = %s", (user_id,))
-        conn.commit()
+            conn.commit()
+            # 改成只有成功才回number
+            return {"data": {"number": order_number}}
 
-        #7 回傳 order number (成功/失敗都回傳)
-        return {"data": {"number": order_number}}
+        # 失敗 payment維持寫入 不給number
+        conn.commit()
+        return JSONResponse(
+            status_code=400,
+            content={"error": True, "message": tappay_msg or "付款失敗"}
+        )
     
     except Exception as e:
         traceback.print_exc()

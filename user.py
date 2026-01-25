@@ -4,13 +4,18 @@ from fastapi import APIRouter, HTTPException, Header, Request
 from pydantic import BaseModel, EmailStr, constr
 from database import get_connection
 from fastapi.responses import JSONResponse
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 router = APIRouter()
 
 # --- 設定區 ---
-SECRET_KEY = "my_secret_key" # 加密用的「密鑰」，隨意一串英文數字
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = "HS256" # 使用的加密演算法
+
+if not SECRET_KEY:
+    raise RuntimeError("Missing JWT_SECRET_KEY in environment")
 
 # --- 資料模型 ---
 class SignUpRequest(BaseModel):
